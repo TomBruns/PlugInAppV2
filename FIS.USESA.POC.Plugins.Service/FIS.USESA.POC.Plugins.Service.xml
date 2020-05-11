@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FIS.USESA.POC.Plugins.Service</name>
+    </assembly>
+    <members>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController">
+            <summary>
+            This class implements the API controller for PlugIns
+            </summary>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.#ctor(FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager,Microsoft.Extensions.Logging.ILogger{FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController})">
+            <summary>
+            
+            </summary>
+            <param name="plugIsManager"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.GetPlugIns">
+            <summary>
+            Returns a list of the currently loaded plugins
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.GetAssemblyLoadContexts">
+            <summary>
+            Returns a list of the current assembly load contexts
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.GetPlugInFolders">
+            <summary>
+            Returns a list of the plugin folders
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.UnloadPlugin(System.String,System.Decimal)">
+            <summary>
+            Unload a plugin
+            </summary>
+            <param name="name"></param>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController">
+            <summary>
+            This class implements api methods related to recurring jobs
+            </summary>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController.#ctor(Microsoft.Extensions.Logging.ILogger{FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController},Hangfire.IBackgroundJobClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController"/> class.
+            </summary>
+            <param name="logger">The logger.</param>
+            <param name="backgroundJobClient">The background job client.</param>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController.ScheduleRecurringJob(FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE)">
+            <summary>
+            Schedules a recurring ob.
+            </summary>
+            <returns>ActionResult.</returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController.DeleteRecurringJob(System.String)">
+            <summary>
+            Deletes a recurring job.
+            </summary>
+            <param name="recurringJobId">The recurring job identifier.</param>
+            <returns>ActionResult&lt;ExisitingRecurringJobBE&gt;.</returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController.GetRecurringJobs">
+            <summary>
+            Gets all of the recurring jobs.
+            </summary>
+            <returns>ActionResult&lt;List&lt;ExisitingRecurringJobBE&gt;&gt;.</returns>
+        </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE">
+            <summary>
+            This class represents a Existing Recurring Job
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.CreatedAt">
+            <summary>
+            Gets or sets the created at.
+            </summary>
+            <value>The created at.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.Schedule">
+            <summary>
+            Gets or sets the schedule.
+            </summary>
+            <value>The schedule.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+            <value>The identifier.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.LastExecution">
+            <summary>
+            Gets or sets the last execution.
+            </summary>
+            <value>The last execution.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.LastJobId">
+            <summary>
+            Gets or sets the last job identifier.
+            </summary>
+            <value>The last job identifier.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.LastJobState">
+            <summary>
+            Gets or sets the last state of the job.
+            </summary>
+            <value>The last state of the job.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.NextExecution">
+            <summary>
+            Gets or sets the next execution.
+            </summary>
+            <value>The next execution.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.Queue">
+            <summary>
+            Gets or sets the queue.
+            </summary>
+            <value>The queue.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.ExisitingRecurringJobBE.TimeZoneId">
+            <summary>
+            Gets or sets the time zone identifier.
+            </summary>
+            <value>The time zone identifier.</value>
+        </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE">
+            <summary>
+            This class defines a recurring job that should be scheduled
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.JobId">
+            <summary>
+            Gets or sets the job identifier.
+            </summary>
+            <value>The job identifier.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.JobDescription">
+            <summary>
+            Gets or sets the job description.
+            </summary>
+            <value>The job description.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.JobPlugInName">
+            <summary>
+            Gets or sets the name of the job plug in.
+            </summary>
+            <value>The name of the job plug in.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.JobPlugInVersion">
+            <summary>
+            Gets or sets the version of the job plug in.
+            </summary>
+            <value>The version of the job plug in.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.CronSchedule">
+            <summary>
+            Gets or sets the cron schedule.
+            </summary>
+            <value>The cron schedule.</value>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.ScheduleTimeZone">
+            <summary>
+            Gets or sets the schedule time zone.
+            </summary>
+            <value>The schedule time zone.</value>
+        </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE">
+            <summary>
+            This class describes a loaded plugin
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE.Version">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE.LoadedAtDT">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE.PlugInInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE.PlugInPath">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE.AssemblyLoadContextName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.PlugInBE.PlugInImpl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.#ctor(FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager,FIS.USESA.POC.Plugins.Shared.Entities.KafkaServiceConfigBE)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager"/> class.
+            </summary>
+            <param name="plugInsManager">The PlugIn Manager.</param>
+            <param name="kafkaConfig">The kafka configuration.</param>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.EnqueueRequest(System.String,System.String,System.Decimal)">
+            <summary>
+            Enqueue a request with the information necessary to dynamically load the necessary assy on the other side of the hangfire queue
+            </summary>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.ExecuteRequest(System.String,System.String,System.Decimal,Hangfire.Server.PerformContext)">
+            <summary>
+            Executes the request using an implementation in a plug-in assy
+            </summary>
+            <param name="jobId">The job identifier.</param>
+            <param name="pluginName">The plugin name.</param>
+            <param name="plugInVersion">The plugin version.</param>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.GetJobPlugIn(System.String,System.Decimal)">
+            <summary>
+            Gets the job plug in.
+            </summary>
+            <param name="jobPlugInType">Type of the job plugIn.</param>
+            <param name="jobPlugInVersion">Version of the job plugIn.</param>
+            <returns>IScheduledTask.</returns>
+            <exception cref="T:System.ApplicationException">No plug-in found for Event Type: [{jobPlugInType}]</exception>
+            <exception cref="T:System.ApplicationException">Multiple plug-ins [{plugIn.Count()}] found for Event Type: [{scheduledTaskType}]</exception>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSerilogEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
+            <inheritdoc />
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSink.Emit(Serilog.Events.LogEvent)">
+            <inheritdoc />
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Logging.PerformContextValue.Render(System.IO.TextWriter,System.String,System.IFormatProvider)">
+            <inheritdoc />
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.LoadedPlugIns">
+            <summary>
+            Returns a list of the loaded plugins
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.AssemblyLoadContexts">
+            <summary>
+            Returns a list of the application load contexts
+            </summary>
+        </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.PlugInFolders">
+            <summary>
+            Returns a list of plugin folders
+            </summary>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.Compose(FIS.USESA.POC.Plugins.Shared.Entities.PlugInsConfigBE)">
+            <summary>
+            Probe the PlugIn subfolders and load the plugins
+            </summary>
+            <param name="plugInsConfig"></param>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.GetListOfPlugInAssys(System.String)">
+            <summary>
+            Find the full paths to the assys in all of the plug-in child folders that implement the IPlugIn interface
+            </summary>
+            <param name="parentFolder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.FindPlugInAssyInFolder(System.String)">
+            <summary>
+            Find the full path to the assy on a folder that implements the IPlugIn interface
+            </summary>
+            <param name="plugInFolderPathName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.LoadPlugin(System.String)">
+            <summary>
+            Load a plugin into a custom AssemblyLoadContext
+            </summary>
+            <param name="pluginPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.CreateCommands(System.Reflection.Assembly)">
+            <summary>
+            Find the types in an assembly that implement the IPlugIn interface
+            </summary>
+            <param name="assembly"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.InterfaceFilter(System.Type,System.Object)">
+            <summary>
+            Type filter used to identify Assemblies with classes that implement a specific Interface
+            </summary>
+            <param name="typeObj"></param>
+            <param name="criteriaObj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Program">
+            <summary>
+            This is the entry point for this assembly
+            </summary>
+        </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Startup.ApiExplorerGroupPerVersionConvention">
+            <summary>
+            Implements Grouping in the Swagger UI using the version that is last part of the namespace
+            </summary>
+            <seealso cref="T:Microsoft.AspNetCore.Mvc.ApplicationModels.IControllerModelConvention" />
+        </member>
+    </members>
+</doc>

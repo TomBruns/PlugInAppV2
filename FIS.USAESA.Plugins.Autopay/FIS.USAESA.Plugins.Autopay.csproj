@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="FIS.USESA.POC.Plugins.Shared">
+      <HintPath>..\PluginsShared\FIS.USESA.POC.Plugins.Shared.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
+	</ItemGroup>
+	
+	<!-- Add custom metadata field containing build d&t-->
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadata">
+			<_Parameter1>CompileTimestamp</_Parameter1>
+			<_Parameter2>$([System.DateTime]::Now.ToString('F'))</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="appSettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="RecurringJobConfig.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy /R /Y &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)PluginsRuntime\$(TargetName)\&quot;" />
+	</Target>
+	
+</Project>

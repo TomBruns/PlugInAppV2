@@ -1,0 +1,8 @@
+{
+  "job_id": "JOB002",
+  "job_description": "Check for Bikes every 2 minutes",
+  "job_plugin_name": "Bikepay",
+  "job_plugin_version": 1.1,
+  "cron_schedule": "*/2 * * * MON,TUE,WED,THU,FRI",
+  "schedule_time_zone": "EST"
+}
