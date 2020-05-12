@@ -3,21 +3,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
 using Hangfire.Storage;
+using Serilog;
+using Serilog.Extensions.Logging;
 
 using FIS.USESA.POC.Plugins.Shared.Entities;
 using FIS.USESA.POC.Plugins.Service.PlugInSupport;
 using FIS.USESA.POC.Plugins.Shared.Interfaces;
 using FIS.USESA.POC.Plugins.Service.Logging;
-using System.Runtime.Loader;
+
+using static FIS.USESA.POC.Plugins.Shared.Constants.SchedulerConstants;
 
 namespace FIS.USESA.POC.Plugins.Service.Hangfire
 {
+    /// <summary>
+    /// This class abstracts the interaction with the Job Scheduler Hangfire
+    /// </summary>
     public class HangfireManager
     {
         private KafkaServiceConfigBE _kafkaConfig;
@@ -49,9 +57,9 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
         }
 
         #region Load via Reflection Approach
-        /// <summary>
-        /// Dynamically load the correct assy and invoke the target method using reflection
-        /// </summary>
+        //// <summary>
+        //// Dynamically load the correct assy and invoke the target method using reflection
+        //// </summary>
         //[DisplayName("Execute Job, Plugin Class {0} => Method {2}]")]
         //public void ExecuteRequest(string className, string assyName, string methodName, string parmValue)
         //{
@@ -96,10 +104,26 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
 
             var plugInLoadContextName = AssemblyLoadContext.GetLoadContext(jobPlugIn.GetType().Assembly).Name;
             logger.Information("Running plugin {pluginName} v{@plugInVersion} from ALC: {plugInLoadContextName}.", pluginName, plugInVersion, plugInLoadContextName);
+            logger.Information(jobPlugIn.GetPlugInInfo());
 
             // call the method on the dynamically selected assy
-            //jobPlugIn.Execute(context.BackgroundJob.Id, logger);
-            jobPlugIn.Execute(context.BackgroundJob.Id);
+            jobPlugIn.Execute(context.BackgroundJob.Id, (LOG_LEVEL logLevel, string logMessage) =>
+            {
+                switch (logLevel)
+                {
+                    case LOG_LEVEL.INFO:
+                        logger.Information(logMessage);
+                        break;
+
+                    case LOG_LEVEL.WARNING:
+                        logger.Warning(logMessage);
+                        break;
+
+                    case LOG_LEVEL.ERROR:
+                        logger.Error(logMessage);
+                        break;
+                }
+            });
 
             //context.WriteLine();
         }
@@ -107,7 +131,7 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
         /// <summary>
         /// Gets the job plug in.
         /// </summary>
-        /// <param name="jobPlugInType">Type of the job plugIn.</param>
+        /// <param name="jobPlugInName">Name of the job plugIn.</param>
         /// <param name="jobPlugInVersion">Version of the job plugIn.</param>
         /// <returns>IScheduledTask.</returns>
         /// <exception cref="ApplicationException">No plug-in found for Event Type: [{jobPlugInType}]</exception>

@@ -12,5 +12,12 @@ namespace FIS.USESA.POC.Plugins.Shared.Constants
 			UNKNOWN = 0,
 			SUCCESS = 1,
 		}
+
+		public enum LOG_LEVEL
+        {
+			INFO = 1,
+			WARNING = 2,
+			ERROR = 3
+        }
 	}
 }

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
+using Serilog;
+
 using FIS.USESA.POC.Plugins.Shared.Entities;
+using static FIS.USESA.POC.Plugins.Shared.Constants.SchedulerConstants;
 
 namespace FIS.USESA.POC.Plugins.Shared.Interfaces
 {
@@ -17,7 +20,7 @@ namespace FIS.USESA.POC.Plugins.Shared.Interfaces
     {
         void InjectConfig(KafkaServiceConfigBE kafkaConfig);
 
-        StdTaskReturnValueBE Execute(string jobId);
+        StdTaskReturnValueBE Execute(string jobId, Action<LOG_LEVEL, string> logMethod);
 
         string GetPlugInInfo();
     }
