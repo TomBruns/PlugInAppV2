@@ -14,6 +14,9 @@ using FIS.USESA.POC.Plugins.Shared.Interfaces;
 
 namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
 {
+    /// <summary>
+    /// This class abstracts the interaction with the Plugins
+    /// </summary>
     public class PlugInsManager
     {
         PlugInsConfigBE _plugInsConfig;

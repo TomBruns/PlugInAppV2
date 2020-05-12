@@ -47,7 +47,7 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
         /// <summary>
         /// Enqueue a request with the information necessary to dynamically load the necessary assy on the other side of the hangfire queue
         /// </summary>
-        [DisplayName("Enqueue Job Id: {0}, Name: {1}.v{2}")]
+        [DisplayName("Enqueue Job Id: {0}, Name: {1} v{2}")]
         public static void EnqueueRequest(string jobId, string plugInName, decimal plugInVersion)
         {
             // the process that is submitting creates new fire & forget jobs
@@ -80,7 +80,7 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
         /// <param name="pluginName">The plugin name.</param>
         /// <param name="plugInVersion">The plugin version.</param>
         /// <param name="context">The context.</param>
-        [DisplayName("Execute Job Id: {0}, Token: {1}")]
+        [DisplayName("Execute Job Id: {0}, Name: {1} v{2}")]
         public void ExecuteRequest(string jobId, string pluginName, decimal plugInVersion, PerformContext context)
         {
             // create a logger
@@ -103,29 +103,44 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
             IPlugIn jobPlugIn = GetJobPlugIn(pluginName, plugInVersion);
 
             var plugInLoadContextName = AssemblyLoadContext.GetLoadContext(jobPlugIn.GetType().Assembly).Name;
-            logger.Information("Running plugin {pluginName} v{@plugInVersion} from ALC: {plugInLoadContextName}.", pluginName, plugInVersion, plugInLoadContextName);
-            logger.Information(jobPlugIn.GetPlugInInfo());
+            logger.Information("Running plugin {pluginInfo} in ALC: {plugInLoadContextName}.", jobPlugIn.GetPlugInInfo(), plugInLoadContextName);
 
-            // call the method on the dynamically selected assy
-            jobPlugIn.Execute(context.BackgroundJob.Id, (LOG_LEVEL logLevel, string logMessage) =>
+            try
             {
-                switch (logLevel)
+                // call the method on the dynamically selected assy passing in an anonymous action delagate for the logging method
+                var result = jobPlugIn.Execute(context.BackgroundJob.Id, (LOG_LEVEL logLevel, string logMessage) =>
                 {
-                    case LOG_LEVEL.INFO:
-                        logger.Information(logMessage);
-                        break;
+                    switch (logLevel)
+                    {
+                        case LOG_LEVEL.INFO:
+                            logger.Information(logMessage);
+                            break;
 
-                    case LOG_LEVEL.WARNING:
-                        logger.Warning(logMessage);
-                        break;
+                        case LOG_LEVEL.WARNING:
+                            logger.Warning(logMessage);
+                            break;
 
-                    case LOG_LEVEL.ERROR:
-                        logger.Error(logMessage);
+                        case LOG_LEVEL.ERROR:
+                            logger.Error(logMessage);
+                            break;
+                    }
+                });
+
+                // write post execution log message
+                switch (result.StepStatus)
+                {
+                    case STD_STEP_STATUS.SUCCESS:
+                        logger.Information(result.ReturnMessage);
+                        break;
+                    case STD_STEP_STATUS.FAILURE:
+                        logger.Error(result.ReturnMessage);
                         break;
                 }
-            });
-
-            //context.WriteLine();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"Unhandled exception occured in plugin: [{ex.ToString()}]");
+            }
         }
 
         /// <summary>

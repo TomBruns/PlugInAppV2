@@ -252,11 +252,34 @@
         <member name="M:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSerilogEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
             <inheritdoc />
         </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSink">
+            <summary>
+            Serilog Log Sink that works with the Hangfire Console
+            </summary>
+        </member>
         <member name="M:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSink.Emit(Serilog.Events.LogEvent)">
             <inheritdoc />
         </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSinkExtensions">
+            <summary>
+            Get the logger for the Hangfire Context
+            </summary>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSinkExtensions.CreateLoggerForPerformContext``1(Hangfire.Server.PerformContext)">
+            <summary>
+            Get the logger for the Hangfire Context
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
         <member name="M:FIS.USESA.POC.Plugins.Service.Logging.PerformContextValue.Render(System.IO.TextWriter,System.String,System.IFormatProvider)">
             <inheritdoc />
+        </member>
+        <member name="T:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager">
+            <summary>
+            This class abstracts the interaction with the Plugins
+            </summary>
         </member>
         <member name="P:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.LoadedPlugIns">
             <summary>

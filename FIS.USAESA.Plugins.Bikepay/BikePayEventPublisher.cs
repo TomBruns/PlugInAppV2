@@ -52,9 +52,25 @@ namespace FIS.USAESA.Plugins.Bikepay
         /// <returns></returns>
         public StdTaskReturnValueBE Execute(string jobId, Action<LOG_LEVEL, string> logMethod)
         {
+            // demo writing to scheduler console
             logMethod.Invoke(LOG_LEVEL.INFO, $"Hello, custom info log message from inside plugin: [{nameof(BikePayEventPublisher)}]!");
             logMethod.Invoke(LOG_LEVEL.WARNING, $"Hello, custom warning log message from inside plugin: [{nameof(BikePayEventPublisher)}]!");
             logMethod.Invoke(LOG_LEVEL.ERROR, $"Hello, custom error log message from inside plugin: [{nameof(BikePayEventPublisher)}]!");
+
+            // go get work to do
+            Random rnd = new Random();
+            int eventCount = rnd.Next(6); // creates a number between 0 and 6
+
+            // publish events
+            logMethod.Invoke(LOG_LEVEL.INFO, $"Job: [{jobId}], PlugIn: [{nameof(BikePayEventPublisher)}] Found [{eventCount}] events to publish");
+            if (eventCount > 0)
+            {
+                for (int eventInstance = 1; eventInstance <= eventCount; eventInstance++)
+                {
+                    // TODO: do something real here, ex: publish msg to Kafka Topic
+                    logMethod.Invoke(LOG_LEVEL.INFO, $"Job: [{jobId}], PlugIn: [{nameof(BikePayEventPublisher)}] Publish Event [#{eventInstance}]");
+                }
+            }
 
             return new StdTaskReturnValueBE() { StepStatus = STD_STEP_STATUS.SUCCESS, ReturnMessage = "Ok" };
         }

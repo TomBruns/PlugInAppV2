@@ -9,6 +9,9 @@ using Serilog.Events;
 
 namespace FIS.USESA.POC.Plugins.Service.Logging
 {
+    /// <summary>
+    /// Serilog Log Sink that works with the Hangfire Console
+    /// </summary>
     public class HangfireConsoleSink : ILogEventSink
     {
         /// <inheritdoc />
