@@ -239,16 +239,6 @@
             <param name="plugInVersion">The plugin version.</param>
             <param name="context">The context.</param>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.GetJobPlugIn(System.String,System.Decimal)">
-            <summary>
-            Gets the job plug in.
-            </summary>
-            <param name="jobPlugInName">Name of the job plugIn.</param>
-            <param name="jobPlugInVersion">Version of the job plugIn.</param>
-            <returns>IScheduledTask.</returns>
-            <exception cref="T:System.ApplicationException">No plug-in found for Event Type: [{jobPlugInType}]</exception>
-            <exception cref="T:System.ApplicationException">Multiple plug-ins [{plugIn.Count()}] found for Event Type: [{scheduledTaskType}]</exception>
-        </member>
         <member name="M:FIS.USESA.POC.Plugins.Service.Logging.HangfireConsoleSerilogEnricher.Enrich(Serilog.Events.LogEvent,Serilog.Core.ILogEventPropertyFactory)">
             <inheritdoc />
         </member>
@@ -295,6 +285,23 @@
             <summary>
             Returns a list of plugin folders
             </summary>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.GetJobPlugIn(System.String,System.Decimal)">
+            <summary>
+            Gets the job plug in.
+            </summary>
+            <param name="jobPlugInName">Name of the job plugIn.</param>
+            <param name="jobPlugInVersion">Version of the job plugIn.</param>
+            <returns>PlugInBE.</returns>
+            <exception cref="T:System.ApplicationException">No plug-in found for Event Type: [{jobPlugInType}]</exception>
+            <exception cref="T:System.ApplicationException">Multiple plug-ins [{plugIn.Count()}] found for Event Type: [{scheduledTaskType}]</exception>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.UnloadPlugIn(System.String,System.Decimal)">
+            <summary>
+            
+            </summary>
+            <param name="jobPlugInName"></param>
+            <param name="jobPlugInVersion"></param>
         </member>
         <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.Compose(FIS.USESA.POC.Plugins.Shared.Entities.PlugInsConfigBE)">
             <summary>

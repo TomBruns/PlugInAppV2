@@ -81,23 +81,44 @@ namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
         /// <param name="name"></param>
         /// <param name="version"></param>
         /// <returns></returns>
+        /// <remarks>
+        /// This is not workng yet!
+        /// </remarks>
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public ActionResult UnloadPlugin(string name, decimal version)
         {
-            //var plugIn = _scheduleTaskPlugIns.Where(pi => pi.Metadata.Name == name && pi.Metadata.Version == (double)version).FirstOrDefault();
+            if (_plugIsManager.UnloadPlugIn(name, version))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound($"Could not unload plugin matching name: [{name}], version: [{version}]");
+            }
+        }
 
-            //if(plugIn != null)
-            //{
-            //    _scheduleTaskPlugIns = _scheduleTaskPlugIns.Where(pi => pi.Metadata.Name != name && pi.Metadata.Version != (double)version);
-            //    GC.Collect();
-            //    return Ok();
-            //}
-            //else
-            //{
-            return NotFound($"No plugin found matching name: [{name}], version: [{version}]");
-            //}
+        /// <summary>
+        /// Load a new plugin
+        /// </summary>
+        /// <param name="plugInFolder"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public ActionResult UnloadPlugin(string plugInFolder)
+        {
+            var newPlugIn = _plugIsManager.ForceLoad(plugInFolder);
+
+            if(newPlugIn != null)
+            {
+                return Ok($"Loaded plugin: [{newPlugIn.PlugInImpl.GetPlugInInfo()}] in ALC: [{newPlugIn.AssemblyLoadContextName}]");
+            }
+            else
+            {
+                return NotFound($"Could not load plugin from folder: [{plugInFolder}]");
+            }
         }
     }
 }

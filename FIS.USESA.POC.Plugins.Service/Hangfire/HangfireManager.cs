@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
 using Hangfire.Storage;
-using Serilog;
-using Serilog.Extensions.Logging;
 
 using FIS.USESA.POC.Plugins.Shared.Entities;
 using FIS.USESA.POC.Plugins.Service.PlugInSupport;
@@ -47,7 +42,7 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
         /// <summary>
         /// Enqueue a request with the information necessary to dynamically load the necessary assy on the other side of the hangfire queue
         /// </summary>
-        [DisplayName("Enqueue Job Id: {0}, Name: {1} v{2}")]
+        [DisplayName("Queue Job Id: {0}, Name: {1} v{2}")]
         public static void EnqueueRequest(string jobId, string plugInName, decimal plugInVersion)
         {
             // the process that is submitting creates new fire & forget jobs
@@ -99,8 +94,8 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
                 }
             }
 
-            // use the string value of the EventType property to dynamically select the correct plug-in assy to use to process the event
-            IPlugIn jobPlugIn = GetJobPlugIn(pluginName, plugInVersion);
+            // dynamically select the correct plug-in assy to use to process the event
+            IPlugIn jobPlugIn = _plugInsManager.GetJobPlugIn(pluginName, plugInVersion).PlugInImpl;
 
             var plugInLoadContextName = AssemblyLoadContext.GetLoadContext(jobPlugIn.GetType().Assembly).Name;
             logger.Information("Running plugin {pluginInfo} in ALC: {plugInLoadContextName}.", jobPlugIn.GetPlugInInfo(), plugInLoadContextName);
@@ -140,34 +135,6 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
             catch (Exception ex)
             {
                 logger.Error($"Unhandled exception occured in plugin: [{ex.ToString()}]");
-            }
-        }
-
-        /// <summary>
-        /// Gets the job plug in.
-        /// </summary>
-        /// <param name="jobPlugInName">Name of the job plugIn.</param>
-        /// <param name="jobPlugInVersion">Version of the job plugIn.</param>
-        /// <returns>IScheduledTask.</returns>
-        /// <exception cref="ApplicationException">No plug-in found for Event Type: [{jobPlugInType}]</exception>
-        /// <exception cref="ApplicationException">Multiple plug-ins [{plugIn.Count()}] found for Event Type: [{scheduledTaskType}]</exception>
-        private IPlugIn GetJobPlugIn(string jobPlugInName, decimal jobPlugInVersion)
-        {
-            var plugIn = _plugInsManager.LoadedPlugIns
-                          .Where(lpi => lpi.Name.ToUpper() == jobPlugInName.ToUpper() && lpi.Version == jobPlugInVersion)
-                          .ToList();
-
-            if (plugIn == null || plugIn.Count() == 0)
-            {
-                throw new ApplicationException($"No plug-in found for Job Name: [{jobPlugInName}], Version: [{jobPlugInVersion}]");
-            }
-            else if (plugIn.Count() != 1)
-            {
-                throw new ApplicationException($"Multiple plug-ins [{plugIn.Count()}] found for Job Name: [{jobPlugInName}], Version: [{jobPlugInVersion}]");
-            }
-            else
-            {
-                return plugIn.First().PlugInImpl;
             }
         }
     }

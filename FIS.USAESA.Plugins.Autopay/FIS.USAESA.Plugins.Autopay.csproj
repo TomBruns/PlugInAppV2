@@ -35,7 +35,13 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="xcopy /R /Y &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)PluginsRuntime\$(TargetName)\&quot;" />
+		<GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+			<Output TaskParameter="Assemblies" ItemName="Targets" />
+		</GetAssemblyIdentity>
+		<ItemGroup>
+			<VersionNumber Include="@(Targets->'%(Version)')"/>
+		</ItemGroup>
+		<Exec Command="xcopy /R /Y &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)PluginsRuntime\$(TargetName)_@(VersionNumber)\&quot;" />
 	</Target>
 	
 </Project>
