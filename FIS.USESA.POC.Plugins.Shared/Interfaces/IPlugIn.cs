@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -7,6 +9,7 @@ using Serilog;
 
 using FIS.USESA.POC.Plugins.Shared.Entities;
 using static FIS.USESA.POC.Plugins.Shared.Constants.SchedulerConstants;
+using FIS.USESA.POC.Plugins.Shared.Attributes;
 
 namespace FIS.USESA.POC.Plugins.Shared.Interfaces
 {
@@ -22,6 +25,8 @@ namespace FIS.USESA.POC.Plugins.Shared.Interfaces
 
         StdTaskReturnValueBE Execute(string jobId, Action<LOG_LEVEL, string> logMethod);
 
+        // cannot use default implementation of this method in the interface (this is feature of C# 8.0)
+        // because we need to use reflection
         string GetPlugInInfo();
     }
 }

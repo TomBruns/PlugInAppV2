@@ -10,8 +10,5 @@ namespace FIS.USESA.POC.Plugins.Shared.Attributes
     public class JobPlugInAttribute : Attribute
     {
         public string Name { get; set; }
-
-        // parameter widening applies
-        public double Version { get; set; }
     }
 }

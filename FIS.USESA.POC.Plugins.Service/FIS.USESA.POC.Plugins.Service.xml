@@ -28,6 +28,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.GetAssemblysLoadedInALC(System.String)">
+            <summary>
+            Returns a list of the assemblies loaded into an AssemblyLoadContext
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.GetPlugInFolders">
             <summary>
             Returns a list of the plugin folders
@@ -40,6 +46,16 @@
             </summary>
             <param name="name"></param>
             <param name="version"></param>
+            <returns></returns>
+            <remarks>
+            This is not workng yet!
+            </remarks>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.UnloadPlugin(System.String)">
+            <summary>
+            Load a new plugin
+            </summary>
+            <param name="plugInFolder"></param>
             <returns></returns>
         </member>
         <member name="T:FIS.USESA.POC.Plugins.Service.Controllers.v1.RecurringJobsController">

@@ -21,7 +21,7 @@ namespace FIS.USAESA.Plugins.Bikepay
     /// The Name and Version attribute allow side-by-side deployment inside the scheduler because each plug-in is
     /// isolated in different AssemblyLoadContexts
     /// </remarks>
-    [JobPlugIn(Name = @"BikePay", Version = 1.1)]
+    [JobPlugIn(Name = @"BikePay")]
     public class BikePayEventPublisher : IPlugIn
     {
         KafkaServiceConfigBE _kafkaServiceConfig;
@@ -89,7 +89,9 @@ namespace FIS.USAESA.Plugins.Bikepay
                                                     .First(a => a.Key == "CompileTimestamp")
                                                     .Value;
 
-            return $"Name: [{plugInAttribute.Name}], Version: [{plugInAttribute.Version}], Compiled: [{compileTimestamp}]";
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
+            return $"Name: [{plugInAttribute.Name}], Assembly Version: [{version}], Compiled: [{compileTimestamp}]";
         }
 
         /// <summary>

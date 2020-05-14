@@ -18,34 +18,43 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. PlugIns", "3. PlugIns", 
 		ReadMe-RecurringJobSchedule.txt = ReadMe-RecurringJobSchedule.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIS.USESA.POC.Plugins.Shared", "FIS.USESA.POC.Plugins.Shared\FIS.USESA.POC.Plugins.Shared.csproj", "{5E4C8CF4-44F3-4B73-B856-3C35880E016F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIS.USESA.POC.Plugins.Shared", "FIS.USESA.POC.Plugins.Shared\FIS.USESA.POC.Plugins.Shared.csproj", "{5E4C8CF4-44F3-4B73-B856-3C35880E016F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIS.USESA.POC.Plugins.Service", "FIS.USESA.POC.Plugins.Service\FIS.USESA.POC.Plugins.Service.csproj", "{72E224B8-72FB-454A-AA16-B2980F943364}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIS.USESA.POC.Plugins.Service", "FIS.USESA.POC.Plugins.Service\FIS.USESA.POC.Plugins.Service.csproj", "{72E224B8-72FB-454A-AA16-B2980F943364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIS.USAESA.Plugins.Autopay", "FIS.USAESA.Plugins.Autopay\FIS.USAESA.Plugins.Autopay.csproj", "{65BFBCED-A28B-49C1-A9F4-D5796AE47777}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIS.USAESA.Plugins.Autopay", "FIS.USAESA.Plugins.Autopay\FIS.USAESA.Plugins.Autopay.csproj", "{65BFBCED-A28B-49C1-A9F4-D5796AE47777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIS.USAESA.Plugins.Bikepay", "FIS.USAESA.Plugins.Bikepay\FIS.USAESA.Plugins.Bikepay.csproj", "{F2BA4D73-F879-4A13-BB92-C02BCE20534F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIS.USAESA.Plugins.Bikepay", "FIS.USAESA.Plugins.Bikepay\FIS.USAESA.Plugins.Bikepay.csproj", "{F2BA4D73-F879-4A13-BB92-C02BCE20534F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		DebugDeployPlugins|Any CPU = DebugDeployPlugins|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5E4C8CF4-44F3-4B73-B856-3C35880E016F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E4C8CF4-44F3-4B73-B856-3C35880E016F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4C8CF4-44F3-4B73-B856-3C35880E016F}.DebugDeployPlugins|Any CPU.ActiveCfg = DebugDeployPlugins|Any CPU
+		{5E4C8CF4-44F3-4B73-B856-3C35880E016F}.DebugDeployPlugins|Any CPU.Build.0 = DebugDeployPlugins|Any CPU
 		{5E4C8CF4-44F3-4B73-B856-3C35880E016F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E4C8CF4-44F3-4B73-B856-3C35880E016F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72E224B8-72FB-454A-AA16-B2980F943364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72E224B8-72FB-454A-AA16-B2980F943364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E224B8-72FB-454A-AA16-B2980F943364}.DebugDeployPlugins|Any CPU.ActiveCfg = DebugDeployPlugins|Any CPU
+		{72E224B8-72FB-454A-AA16-B2980F943364}.DebugDeployPlugins|Any CPU.Build.0 = DebugDeployPlugins|Any CPU
 		{72E224B8-72FB-454A-AA16-B2980F943364}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72E224B8-72FB-454A-AA16-B2980F943364}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65BFBCED-A28B-49C1-A9F4-D5796AE47777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65BFBCED-A28B-49C1-A9F4-D5796AE47777}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65BFBCED-A28B-49C1-A9F4-D5796AE47777}.DebugDeployPlugins|Any CPU.ActiveCfg = DebugDeployPlugins|Any CPU
+		{65BFBCED-A28B-49C1-A9F4-D5796AE47777}.DebugDeployPlugins|Any CPU.Build.0 = DebugDeployPlugins|Any CPU
 		{65BFBCED-A28B-49C1-A9F4-D5796AE47777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65BFBCED-A28B-49C1-A9F4-D5796AE47777}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2BA4D73-F879-4A13-BB92-C02BCE20534F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2BA4D73-F879-4A13-BB92-C02BCE20534F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2BA4D73-F879-4A13-BB92-C02BCE20534F}.DebugDeployPlugins|Any CPU.ActiveCfg = DebugDeployPlugins|Any CPU
+		{F2BA4D73-F879-4A13-BB92-C02BCE20534F}.DebugDeployPlugins|Any CPU.Build.0 = DebugDeployPlugins|Any CPU
 		{F2BA4D73-F879-4A13-BB92-C02BCE20534F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2BA4D73-F879-4A13-BB92-C02BCE20534F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

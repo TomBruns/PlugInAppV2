@@ -62,6 +62,20 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
             get => new DirectoryInfo(_plugInsConfig.PlugInsParentFolder).GetDirectories().Select(di => $".\\{di.Name}").ToList();
         }
 
+        public List<string> GetAssembliesLoadedInALC(string alcName)
+        {
+            var loadedAssys = new List<string>();
+
+            var xx = AssemblyLoadContext.All.Where(alc => alc.Name == alcName).FirstOrDefault();
+
+            if (xx != null)
+            {
+                loadedAssys = xx.Assemblies.Select(a => a.FullName ).ToList<string>();
+            }
+
+            return loadedAssys;
+        }
+
         /// <summary>
         /// Gets the job plug in.
         /// </summary>
@@ -288,7 +302,7 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
                             PlugInInfo = result.GetPlugInInfo(),
                             PlugInImpl = result,
                             PlugInPath = assembly.CodeBase,
-                            Version = (decimal)type.GetCustomAttribute<JobPlugInAttribute>().Version
+                            Version = (type.Assembly.GetName().Version.Major + type.Assembly.GetName().Version.Minor/10.0M)
                         };
 
                         yield return plugIn;

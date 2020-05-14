@@ -4,9 +4,14 @@
 	  <!--
     <OutputType>Exe</OutputType> -->
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Configurations>Debug;Release;DebugDeployPlugins</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\xtobr\source\repos\FISWorldpay\PlugInAppV2\FIS.USESA.POC.Plugins.Service\FIS.USESA.POC.Plugins.Service.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDeployPlugins|AnyCPU'">
     <DocumentationFile>C:\Users\xtobr\source\repos\FISWorldpay\PlugInAppV2\FIS.USESA.POC.Plugins.Service\FIS.USESA.POC.Plugins.Service.xml</DocumentationFile>
   </PropertyGroup>
 

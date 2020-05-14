@@ -62,6 +62,20 @@ namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of the assemblies loaded into an AssemblyLoadContext
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("alc/{alcName}/assemblies")]
+        [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.OK)]
+        public ActionResult<List<string>> GetAssemblysLoadedInALC(string alcName)
+        {
+            var loadedAssemblies = _plugIsManager.GetAssembliesLoadedInALC(alcName);
+
+            return Ok(loadedAssemblies);
+        }
+
+        /// <summary>
         /// Returns a list of the plugin folders
         /// </summary>
         /// <returns></returns>
