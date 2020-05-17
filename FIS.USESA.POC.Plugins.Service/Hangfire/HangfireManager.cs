@@ -43,7 +43,7 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
         /// Enqueue a request with the information necessary to dynamically load the necessary assy on the other side of the hangfire queue
         /// </summary>
         [DisplayName("Queue Job Id: {0}, Name: {1} v{2}")]
-        public static void EnqueueRequest(string jobId, string plugInName, decimal plugInVersion)
+        public static void EnqueueRequest(string jobId, string plugInName, Version plugInVersion)
         {
             // the process that is submitting creates new fire & forget jobs
             // they can be processed in parallel on any available thread on any server running hangfire
@@ -76,7 +76,7 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
         /// <param name="plugInVersion">The plugin version.</param>
         /// <param name="context">The context.</param>
         [DisplayName("Execute Job Id: {0}, Name: {1} v{2}")]
-        public void ExecuteRequest(string jobId, string pluginName, decimal plugInVersion, PerformContext context)
+        public void ExecuteRequest(string jobId, string pluginName, Version plugInVersion, PerformContext context)
         {
             // create a logger
             var logger = context.CreateLoggerForPerformContext<HangfireManager>();
@@ -95,7 +95,7 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
             }
 
             // dynamically select the correct plug-in assy to use to process the event
-            IPlugIn jobPlugIn = _plugInsManager.GetJobPlugIn(pluginName, plugInVersion).PlugInImpl;
+            IPlugIn jobPlugIn =_plugInsManager.GetJobPlugIn(pluginName, plugInVersion).PlugInImpl; ;
 
             var plugInLoadContextName = AssemblyLoadContext.GetLoadContext(jobPlugIn.GetType().Assembly).Name;
             logger.Information("Running plugin {pluginInfo} in ALC: {plugInLoadContextName}.", jobPlugIn.GetPlugInInfo(), plugInLoadContextName);
@@ -135,6 +135,13 @@ namespace FIS.USESA.POC.Plugins.Service.Hangfire
             catch (Exception ex)
             {
                 logger.Error($"Unhandled exception occured in plugin: [{ex.ToString()}]");
+            }
+            finally
+            {
+                if(jobPlugIn != null)
+                {
+                    jobPlugIn = null;
+                }
             }
         }
     }

@@ -45,12 +45,19 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
         /// </summary>
         public List<string> AssemblyLoadContexts
         {
+            // AssemblyLoadContext.All seems to return inconsistent results
             //get => AssemblyLoadContext.All.Select(c => c.Name).ToList();
             get
             {
-                // TODO: debug why sometimes we only have the default assembly load context
-                var yy = _loadedPlugIns;
-                return AssemblyLoadContext.All.Select(c => c.Name).ToList();
+                List<string> alcs = new List<string>();
+
+                foreach(var xx in _loadedPlugIns)
+                {
+                    var alc = AssemblyLoadContext.GetLoadContext(xx.PlugInImpl.GetType().Assembly);
+                    alcs.Add(alc.Name);
+                }
+
+                return alcs; 
             }
         }
 
@@ -62,6 +69,9 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
             get => new DirectoryInfo(_plugInsConfig.PlugInsParentFolder).GetDirectories().Select(di => $".\\{di.Name}").ToList();
         }
 
+        /// <summary>Returns a list of assemblies loaded into the specified assembly load context</summary>
+        /// <param name="alcName">Name of the alc.</param>
+        /// <returns>List&lt;System.String&gt;.</returns>
         public List<string> GetAssembliesLoadedInALC(string alcName)
         {
             var loadedAssys = new List<string>();
@@ -84,7 +94,7 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
         /// <returns>PlugInBE.</returns>
         /// <exception cref="ApplicationException">No plug-in found for Event Type: [{jobPlugInType}]</exception>
         /// <exception cref="ApplicationException">Multiple plug-ins [{plugIn.Count()}] found for Event Type: [{scheduledTaskType}]</exception>
-        public PlugInBE GetJobPlugIn(string jobPlugInName, decimal jobPlugInVersion)
+        public PlugInBE GetJobPlugIn(string jobPlugInName, Version jobPlugInVersion)
         {
             var plugIn = _loadedPlugIns
                           .Where(lpi => lpi.Name.ToUpper() == jobPlugInName.ToUpper()
@@ -110,8 +120,7 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
         /// </summary>
         /// <param name="jobPlugInName"></param>
         /// <param name="jobPlugInVersion"></param>
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public bool UnloadPlugIn(string jobPlugInName, decimal jobPlugInVersion)
+        public bool UnloadPlugIn(string jobPlugInName, Version jobPlugInVersion)
         {
             // find the plug-in
             var plugIn = GetJobPlugIn(jobPlugInName, jobPlugInVersion);
@@ -120,10 +129,13 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
             _loadedPlugIns.Remove(plugIn);
 
             // find the assemly load context that holds 
+            var alc = AssemblyLoadContext.GetLoadContext(plugIn.GetType().Assembly);
+
             var alcs = AssemblyLoadContext.All;
-            var alc = alcs.Where(a => a.Name == plugIn.AssemblyLoadContextName).FirstOrDefault();
+            //var alc = alcs.Where(a => a.Name == plugIn.AssemblyLoadContextName).FirstOrDefault();
 
             // null out our reference to the assy
+            plugIn.PlugInImpl = null;
             plugIn = null;
 
             if (alc != null)
@@ -144,6 +156,9 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
             }
         }
 
+        /// <summary>Forces plug-in in a specified folder to load.</summary>
+        /// <param name="pluginSubdirectory">The plugin subdirectory.</param>
+        /// <returns>PlugInBE.</returns>
         public PlugInBE ForceLoad(string pluginSubdirectory)
         {
             string newPlugInFolderPathName = System.IO.Path.Combine(_plugInsConfig.PlugInsParentFolder, pluginSubdirectory);
@@ -152,15 +167,16 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
 
             var newPlugInAssy = LoadPlugin(newPlugInAssyPathName);
 
-            var newPlugIn =  CreateCommands(newPlugInAssy);
+            var newPlugIns =  CreateCommands(newPlugInAssy);
 
-            foreach (var loadedPlugIn in newPlugIn)
+            foreach (var newPlugIn in newPlugIns)
             {
-                loadedPlugIn.PlugInImpl.InjectConfig(_kafkaConfig);
-                _loadedPlugIns.Add(loadedPlugIn);
+                newPlugIn.PlugInImpl.InjectConfig(_kafkaConfig);
+
+                _loadedPlugIns.Add(newPlugIn);
             }
 
-            return newPlugIn.First();
+            return newPlugIns.First();
         }
 
         /// <summary>
@@ -262,6 +278,7 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
         /// </summary>
         /// <param name="pluginPath"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static Assembly LoadPlugin(string pluginPath)
         {
             // build a unique name for the load context based of the plugin's parent folder
@@ -302,7 +319,7 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
                             PlugInInfo = result.GetPlugInInfo(),
                             PlugInImpl = result,
                             PlugInPath = assembly.CodeBase,
-                            Version = (type.Assembly.GetName().Version.Major + type.Assembly.GetName().Version.Minor/10.0M)
+                            Version = type.Assembly.GetName().Version
                         };
 
                         yield return plugIn;

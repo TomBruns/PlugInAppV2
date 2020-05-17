@@ -9,11 +9,12 @@
             This class implements the API controller for PlugIns
             </summary>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.#ctor(FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager,Microsoft.Extensions.Logging.ILogger{FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController})">
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.#ctor(FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager,FIS.USESA.POC.Plugins.Shared.Entities.KafkaServiceConfigBE,Microsoft.Extensions.Logging.ILogger{FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController})">
             <summary>
             
             </summary>
             <param name="plugIsManager"></param>
+            <param name="kafkaConfig"></param>
             <param name="logger"></param>
         </member>
         <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.GetPlugIns">
@@ -40,18 +41,21 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.UnloadPlugin(System.String,System.Decimal)">
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.UnloadPlugin(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Unload a plugin
             </summary>
             <param name="name"></param>
-            <param name="version"></param>
+            <param name="major"></param>
+            <param name="minor"></param>
+            <param name="build"></param>
+            <param name="revision"></param>
             <returns></returns>
             <remarks>
             This is not workng yet!
             </remarks>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.UnloadPlugin(System.String)">
+        <member name="M:FIS.USESA.POC.Plugins.Service.Controllers.v1.PlugInsController.ForceLoadPlugin(System.String)">
             <summary>
             Load a new plugin
             </summary>
@@ -171,6 +175,12 @@
             </summary>
             <value>The name of the job plug in.</value>
         </member>
+        <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.JobPlugInVersionString">
+            <summary>
+            Gets or sets the version of the job plug in.
+            </summary>
+            <value>The version of the job plug in.</value>
+        </member>
         <member name="P:FIS.USESA.POC.Plugins.Service.Entities.NewRecurringJobBE.JobPlugInVersion">
             <summary>
             Gets or sets the version of the job plug in.
@@ -241,12 +251,12 @@
             <param name="plugInsManager">The PlugIn Manager.</param>
             <param name="kafkaConfig">The kafka configuration.</param>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.EnqueueRequest(System.String,System.String,System.Decimal)">
+        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.EnqueueRequest(System.String,System.String,System.Version)">
             <summary>
             Enqueue a request with the information necessary to dynamically load the necessary assy on the other side of the hangfire queue
             </summary>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.ExecuteRequest(System.String,System.String,System.Decimal,Hangfire.Server.PerformContext)">
+        <member name="M:FIS.USESA.POC.Plugins.Service.Hangfire.HangfireManager.ExecuteRequest(System.String,System.String,System.Version,Hangfire.Server.PerformContext)">
             <summary>
             Executes the request using an implementation in a plug-in assy
             </summary>
@@ -302,7 +312,12 @@
             Returns a list of plugin folders
             </summary>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.GetJobPlugIn(System.String,System.Decimal)">
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.GetAssembliesLoadedInALC(System.String)">
+            <summary>Returns a list of assemblies loaded into the specified assembly load context</summary>
+            <param name="alcName">Name of the alc.</param>
+            <returns>List&lt;System.String&gt;.</returns>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.GetJobPlugIn(System.String,System.Version)">
             <summary>
             Gets the job plug in.
             </summary>
@@ -312,12 +327,17 @@
             <exception cref="T:System.ApplicationException">No plug-in found for Event Type: [{jobPlugInType}]</exception>
             <exception cref="T:System.ApplicationException">Multiple plug-ins [{plugIn.Count()}] found for Event Type: [{scheduledTaskType}]</exception>
         </member>
-        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.UnloadPlugIn(System.String,System.Decimal)">
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.UnloadPlugIn(System.String,System.Version)">
             <summary>
             
             </summary>
             <param name="jobPlugInName"></param>
             <param name="jobPlugInVersion"></param>
+        </member>
+        <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.ForceLoad(System.String)">
+            <summary>Forces plug-in in a specified folder to load.</summary>
+            <param name="pluginSubdirectory">The plugin subdirectory.</param>
+            <returns>PlugInBE.</returns>
         </member>
         <member name="M:FIS.USESA.POC.Plugins.Service.PlugInSupport.PlugInsManager.Compose(FIS.USESA.POC.Plugins.Shared.Entities.PlugInsConfigBE)">
             <summary>

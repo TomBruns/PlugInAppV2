@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 using Microsoft.Extensions.Configuration;
 
@@ -10,6 +11,9 @@ using FIS.USESA.POC.Plugins.Shared.Attributes;
 using FIS.USESA.POC.Plugins.Shared.Entities;
 using FIS.USESA.POC.Plugins.Shared.Interfaces;
 using static FIS.USESA.POC.Plugins.Shared.Constants.SchedulerConstants;
+using FIS.USAESA.Autopay.Shared.Entities;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace FIS.USAESA.Plugins.Autopay
 {
@@ -62,15 +66,37 @@ namespace FIS.USAESA.Plugins.Autopay
             // go get work to do
             Random rnd = new Random();
             int eventCount = rnd.Next(6); // creates a number between 0 and 6
+            logMethod.Invoke(LOG_LEVEL.INFO, $"Job: [{jobId}], PlugIn: [{nameof(AutoPayEventPublisher)}] Found [{eventCount}] events to publish");
+
+            AutopayEventBE autopayEvent;
 
             // publish events
-            logMethod.Invoke(LOG_LEVEL.INFO, $"Job: [{jobId}], PlugIn: [{nameof(AutoPayEventPublisher)}] Found [{eventCount}] events to publish");
             if (eventCount > 0)
             {
                 for (int eventInstance = 1; eventInstance <= eventCount; eventInstance++)
                 {
-                    // TODO: do something real here, ex: publish msg to Kafka Topic
-                    logMethod.Invoke(LOG_LEVEL.INFO, $"Job: [{jobId}], PlugIn: [{nameof(AutoPayEventPublisher)}] Publish Event [#{eventInstance}]");
+                    try
+                    {
+                        autopayEvent = new AutopayEventBE() { SchedulerJobId = jobId, EventDTUTC = DateTime.UtcNow, Counter = eventInstance };
+
+                        // TODO: do something real here, ex: publish msg to Kafka Topic
+
+                        // demo writing a log message from within a plugin that will show up on the scheduler console
+                        /*
+                         This throws
+                            Method 'DisposeAsync' in type 'System.Text.Json.Utf8JsonWriter' 
+                                from assembly 'System.Text.Json, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' 
+                                does not have an implementation.
+                         */
+                        string logMessage = JsonSerializer.Serialize(autopayEvent);
+                       
+                        logMethod.Invoke(LOG_LEVEL.INFO, $"Publish Event [{logMessage}]");
+                    }
+                    catch (Exception ex)
+                    {
+                        logMethod.Invoke(LOG_LEVEL.ERROR, $"Exception in EventInstance: [{eventInstance}], [{ex.ToString()}]!");
+
+                    }
                 }
             }
 

@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-using Serilog;
-
 using FIS.USESA.POC.Plugins.Shared.Entities;
 using static FIS.USESA.POC.Plugins.Shared.Constants.SchedulerConstants;
 using FIS.USESA.POC.Plugins.Shared.Attributes;

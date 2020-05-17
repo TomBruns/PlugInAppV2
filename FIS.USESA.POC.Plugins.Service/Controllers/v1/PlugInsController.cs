@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 
 using FIS.USESA.POC.Plugins.Service.PlugInSupport;
 using FIS.USESA.POC.Plugins.Service.Entities;
+using FIS.USESA.POC.Plugins.Shared.Interfaces;
+using FIS.USESA.POC.Plugins.Shared.Entities;
 
 namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
 {
@@ -22,16 +24,19 @@ namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
     {
         private readonly ILogger<PlugInsController> _logger;
         private PlugInsManager _plugIsManager;
+        private KafkaServiceConfigBE _kafkaConfig;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="plugIsManager"></param>
+        /// <param name="kafkaConfig"></param>
         /// <param name="logger"></param>
-        public PlugInsController(PlugInsManager plugIsManager, ILogger<PlugInsController> logger)
+        public PlugInsController(PlugInsManager plugIsManager, KafkaServiceConfigBE kafkaConfig, ILogger<PlugInsController> logger)
         {
             _logger = logger;
             _plugIsManager = plugIsManager;
+            _kafkaConfig = kafkaConfig;
         }
 
         /// <summary>
@@ -70,7 +75,7 @@ namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
         [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.OK)]
         public ActionResult<List<string>> GetAssemblysLoadedInALC(string alcName)
         {
-            var loadedAssemblies = _plugIsManager.GetAssembliesLoadedInALC(alcName);
+            var loadedAssemblies = _plugIsManager.GetAssembliesLoadedInALC(alcName).OrderBy(name => name);
 
             return Ok(loadedAssemblies);
         }
@@ -93,7 +98,10 @@ namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
         /// Unload a plugin
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="version"></param>
+        /// <param name="major"></param>
+        /// <param name="minor"></param>
+        /// <param name="build"></param>
+        /// <param name="revision"></param>
         /// <returns></returns>
         /// <remarks>
         /// This is not workng yet!
@@ -101,8 +109,10 @@ namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public ActionResult UnloadPlugin(string name, decimal version)
+        public ActionResult UnloadPlugin(string name, int major, int minor, int build, int revision)
         {
+            Version version = new Version(major, minor, build, revision);
+
             if (_plugIsManager.UnloadPlugIn(name, version))
             {
                 return Ok();
@@ -121,12 +131,14 @@ namespace FIS.USESA.POC.Plugins.Service.Controllers.v1
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public ActionResult UnloadPlugin(string plugInFolder)
+        public ActionResult ForceLoadPlugin(string plugInFolder)
         {
             var newPlugIn = _plugIsManager.ForceLoad(plugInFolder);
 
             if(newPlugIn != null)
             {
+                newPlugIn.PlugInImpl.InjectConfig(_kafkaConfig);
+
                 return Ok($"Loaded plugin: [{newPlugIn.PlugInImpl.GetPlugInInfo()}] in ALC: [{newPlugIn.AssemblyLoadContextName}]");
             }
             else

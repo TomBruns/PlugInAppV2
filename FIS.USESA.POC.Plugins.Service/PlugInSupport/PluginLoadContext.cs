@@ -18,6 +18,9 @@ namespace FIS.USESA.POC.Plugins.Service.PlugInSupport
         protected override Assembly Load(AssemblyName assemblyName)
         {
             string assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
+
+            System.Diagnostics.Debug.WriteLine($"Name: [{assemblyName}] => Path: [{assemblyPath ?? "<null>"}]");
+
             if (assemblyPath != null)
             {
                 return LoadFromAssemblyPath(assemblyPath);

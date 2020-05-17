@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FIS.USESA.POC.Plugins.Service.Entities
 {
@@ -37,7 +38,18 @@ namespace FIS.USESA.POC.Plugins.Service.Entities
         /// </summary>
         /// <value>The version of the job plug in.</value>
         [JsonPropertyName(@"job_plugin_version")]
-        public decimal JobPlugInVersion { get; set; }
+        public string JobPlugInVersionString 
+        { 
+            get => JobPlugInVersion.ToString();
+            set => this.JobPlugInVersion = new Version(value);
+        }
+
+        /// <summary>
+        /// Gets or sets the version of the job plug in.
+        /// </summary>
+        /// <value>The version of the job plug in.</value>
+        [JsonIgnore]
+        public Version JobPlugInVersion { get; set; }
 
         //[JsonPropertyName(@"parameters")]
         //public object[] parameters { get; set; }

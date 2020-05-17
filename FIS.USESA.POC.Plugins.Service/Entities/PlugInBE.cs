@@ -23,7 +23,7 @@ namespace FIS.USESA.POC.Plugins.Service.Entities
         /// 
         /// </summary>
         [JsonPropertyName(@"version")]
-        public decimal Version { get; set; }
+        public Version Version { get; set; }
 
         /// <summary>
         /// 
